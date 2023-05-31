@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+
+namespace MVC_CRUD_EMPLEADOS.Models;
+
+public partial class MvcEmpleadosContext : DbContext
+{
+    public MvcEmpleadosContext()
+    {
+    }
+
+    public MvcEmpleadosContext(DbContextOptions<MvcEmpleadosContext> options)
+        : base(options)
+    {
+    }
+
+    public virtual DbSet<Empleado> Empleados { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+       // #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        // => optionsBuilder.UseSqlServer("server=localhost; database=mvcEmpleados; integrated security=true; Encrypt=false; Trusted_Connection=true");
+
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Empleado>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__empleado__3214EC07608A111F");
+
+            entity.ToTable("empleados");
+
+            entity.Property(e => e.Apellido)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Direccion)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.FechaEmpleado).HasColumnType("date");
+            entity.Property(e => e.Mail)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(25)
+                .IsUnicode(false);
+            entity.Property(e => e.ResideEnRd).HasColumnName("ResideEnRD");
+            entity.Property(e => e.Telefono)
+                .HasMaxLength(10)
+                .IsUnicode(false);
+        });
+
+        OnModelCreatingPartial(modelBuilder);
+    }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}
